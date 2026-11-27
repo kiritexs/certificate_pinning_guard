@@ -8,6 +8,20 @@ It exists because the naive Flutter pinning recipe you'll find everywhere is
 **fail-open**, and getting pinning subtly wrong gives you *zero* protection
 while looking like it works.
 
+## When to use it
+
+Choose it when your app talks to your own API and must refuse anyone in the
+middle, including a certificate authority the user or a device manager
+installed.
+
+- Only the root or intermediate certificates you pin are trusted, checked
+  during the TLS handshake before a single byte of your request is sent.
+- Optional leaf or public-key pins on top, for the exact certificate or key.
+- It fails closed: a mismatch, a missing certificate or a misconfiguration
+  is an error, never a silent pass.
+- Pure Dart, so it works the same in Flutter apps, command-line tools and
+  servers, with `package:http`, `dio` or a raw `HttpClient`.
+
 ---
 
 ## The trap this avoids
